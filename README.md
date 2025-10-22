@@ -10,6 +10,7 @@ The Promptitude Extension automatically synchronizes the latest GitHub Copilot p
 
 - **🔄 Automatic Sync**: Configurable sync frequency (daily by default)
 - **📦 Multiple Repositories**: Support for syncing from multiple Git repositories simultaneously
+- **💬 Chat Integration**: Interactive chat participant for prompt discovery and management
 - **🌍 Cross-Platform**: Works on macOS, Windows, and Linux
 - **⚙️ Configurable**: Customizable sync frequency and target directory
 - **🔐 Secure**: Uses your existing GitHub authentication from VS Code and secure PAT storage for Azure DevOps
@@ -18,6 +19,7 @@ The Promptitude Extension automatically synchronizes the latest GitHub Copilot p
 - **🎨 User-Friendly**: Simple setup with minimal configuration required
 - **📊 Status Indicators**: Clear feedback on sync status and last update time
 - **🛡️ Error Handling**: Graceful handling of repository conflicts and partial failures
+- **🏷️ Rich Metadata**: Support for YAML frontmatter with tags, categories, and descriptions
 
 ## 🚀 Quick Start
 
@@ -114,6 +116,42 @@ When syncing multiple repositories:
 
 ## 🎮 Usage
 
+### Chat Integration (NEW! ✨)
+
+Interact with your synced prompts through VS Code's chat interface:
+
+1. **Open Chat Panel**: Use `Ctrl+Shift+P` (or `Cmd+Shift+P`) → "Chat: Focus on Chat View"
+2. **Type `@prompts`** in the chat input to invoke the prompt participant
+3. **Available Commands**:
+   - `@prompts help` - Show comprehensive help
+   - `@prompts list` - List all prompts with categories
+   - `@prompts sync` - Sync from repositories
+   - `@prompts search <term>` - Search prompts by name/tags
+   - `@prompts categories` - View category summary
+
+**Example Interaction:**
+```
+@prompts search code review
+```
+Shows all prompts related to code review with their metadata, tags, and source information.
+
+**Rich Prompt Metadata:**
+Enhance your prompts with YAML frontmatter:
+```markdown
+---
+name: "Code Review Expert"
+description: "Performs thorough code reviews"
+author: "DevOps Team"
+category: "prompt"
+tags: ["code-review", "best-practices"]
+version: "1.0.0"
+---
+
+Your prompt content here...
+```
+
+See [CHAT_INTEGRATION.md](./CHAT_INTEGRATION.md) for detailed documentation.
+
 ### Automatic Sync
 
 Once configured, the extension works automatically based on your sync frequency setting. You'll see notifications (if enabled) when sync operations complete.
@@ -165,6 +203,7 @@ Access these commands through the VS Code Command Palette (`Ctrl+Shift+P` or `Cm
 | **Promptitude: Sync Now** | Manually trigger an immediate sync of all configured repositories |
 | **Promptitude: Show Status** | Display extension status, configuration, and authentication information |
 | **Promptitude: Open Prompts Folder** | Open the local prompts directory in your system file explorer |
+| **Promptitude: Refresh Prompt Cache** | Manually refresh the chat participant prompt cache |
 
 ### Azure DevOps Authentication Management
 

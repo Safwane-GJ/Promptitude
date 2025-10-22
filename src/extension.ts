@@ -4,10 +4,12 @@ import { StatusBarManager } from './statusBarManager';
 import { ConfigManager } from './configManager';
 import { Logger } from './utils/logger';
 import { AzureDevOpsApiManager } from './utils/azureDevOps';
+import { ChatParticipantManager } from './chatParticipant';
 
 
 let syncManager: SyncManager;
 let statusBarManager: StatusBarManager;
+let chatParticipant: ChatParticipantManager | undefined;
 let logger: Logger;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -164,11 +166,37 @@ export function activate(context: vscode.ExtensionContext) {
     // Initialize sync manager
     syncManager.initialize(context);
 
+    // Initialize chat participant
+    try {
+        chatParticipant = new ChatParticipantManager(syncManager, configManager);
+        chatParticipant.initialize(context);
+        
+        // Register chat-related commands
+        const refreshCacheCommand = vscode.commands.registerCommand('promptitude.chat.refreshCache', async () => {
+            if (chatParticipant) {
+                await chatParticipant.refreshPromptCache();
+                vscode.window.showInformationMessage('✅ Prompt cache refreshed successfully');
+            }
+        });
+        
+        context.subscriptions.push(refreshCacheCommand);
+        
+        logger.info('Chat participant initialized');
+    } catch (error) {
+        logger.warn(`Chat participant initialization failed: ${error instanceof Error ? error.message : String(error)}`);
+        // Continue without chat integration if it fails
+    }
+
     logger.info('Promptitude Extension activated successfully');
 }
 
 export function deactivate() {
     logger?.info('Promptitude Extension is deactivating...');
+    
+    if (chatParticipant) {
+        chatParticipant.dispose();
+    }
+    
     syncManager?.dispose();
     statusBarManager?.dispose();
     Logger.disposeSharedChannel();

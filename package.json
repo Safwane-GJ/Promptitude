@@ -20,6 +20,36 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "chatParticipants": [
+      {
+        "id": "promptitude.prompts",
+        "name": "prompts",
+        "description": "Access and manage your synced prompts from GitHub and Azure DevOps repositories",
+        "isSticky": false,
+        "commands": [
+          {
+            "name": "help",
+            "description": "Show help information"
+          },
+          {
+            "name": "list",
+            "description": "List all available prompts"
+          },
+          {
+            "name": "sync",
+            "description": "Sync prompts from repositories"
+          },
+          {
+            "name": "search",
+            "description": "Search prompts by name, description, or tags"
+          },
+          {
+            "name": "categories",
+            "description": "Show prompts grouped by category"
+          }
+        ]
+      }
+    ],
     "configuration": {
       "title": "Promptitude",
       "properties": {
@@ -119,6 +149,11 @@
       {
         "command": "promptitude.clearAzureDevOpsCache",
         "title": "Clear Azure DevOps Authentication Cache",
+        "category": "Promptitude"
+      },
+      {
+        "command": "promptitude.chat.refreshCache",
+        "title": "Refresh Prompt Cache",
         "category": "Promptitude"
       }
     ]

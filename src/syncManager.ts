@@ -199,10 +199,15 @@ export class SyncManager {
                     this.logger.warn(`No content retrieved for ${file.path}, skipping`);
                     continue;
                 }
-                const needsUpdate = await this.shouldUpdateFile(localPath, content);
+
+                // Add source tracking comment to the content
+                const sourceComment = `<!-- Source: ${owner}/${repo}/${file.path} (branch: ${branch}) -->\n`;
+                const contentWithSource = sourceComment + content;
+                
+                const needsUpdate = await this.shouldUpdateFile(localPath, contentWithSource);
                 
                 if (needsUpdate) {
-                    await this.fileSystem.writeFileContent(localPath, content);
+                    await this.fileSystem.writeFileContent(localPath, contentWithSource);
                     itemsUpdated++;
                     this.logger.debug(`Updated file: ${localPath}`);
                 } else {

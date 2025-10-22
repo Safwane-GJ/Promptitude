@@ -49,7 +49,20 @@ export class FileSystemManager {
         return path.normalize(filePath);
     }
 
-    getBasename(filePath: string): string {
-        return path.basename(filePath);
+    getBasename(filePath: string, ext?: string): string {
+        const basename = path.basename(filePath);
+        if (ext && basename.endsWith(ext)) {
+            return basename.slice(0, -ext.length);
+        }
+        return basename;
+    }
+
+    async directoryExists(dirPath: string): Promise<boolean> {
+        try {
+            const stats = await stat(dirPath);
+            return stats.isDirectory();
+        } catch {
+            return false;
+        }
     }
 }
